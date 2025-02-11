@@ -1,22 +1,152 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Poppins', sans-serif;
 }
+
+/* Navbar custom styles */
+.navbar {
+    background-color: #484773 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+    .navbar .nav-link,
+    .navbar .navbar-brand {
+        color: white !important;
+        font-weight: bold;
+    }
+
+        .navbar .nav-link:hover {
+            color: #d4c4ff !important;
+        }
+
+
+.navbar-brand {
+    font-size: 25px !important;
+    font-weight: bold;
+    margin-left: -2rem;
+}
+
+
+/* Adjust Navbar Logo */
+.logo-img {
+    height: 52px;
+    width: auto;
+    margin-right: 0px;
+}
+
+/* Reduce spacing between logo and brand name */
+.brand-text {
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Center Navbar Links */
+.navbar-nav {
+    width: fit-content; /* Prevents it from stretching too far */
+    font-size: 18px;
+
+}
+
+/* Add or modify these styles in your existing CSS */
+.container {
+    padding-left: 0rem; /* Adjust this value to move logo more right */
+    padding-right: -5rem; /* Adjust this value to move nav items more left */
+}
+
+
+.main {
+    min-height: 110vh;
+    width: 100%;
+    background: linear-gradient(135deg, #867bcf 5%, #513A66 100%);
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    margin-top: -17px !important; /* Adjust value if needed */
+}
+
+.text-box {
+    width: 90%;
+    color: #fff;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+}
+
+    .text-box p {
+        margin: 10px 0 40px;
+        font-size: 19px;
+        color: #fff;
+        font-weight: 400;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .text-box h1 {
+        font-size: 62px;
+        font-weight: bold;
+        font-family: 'Poppins', sans-serif;
+    }
+
+.hero-section {
+    padding: 4rem 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    color: white;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+    .hero-section h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-section .lead {
+        font-size: 1.5rem;
+        font-weight: 400;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+.btn-primary {
+    background-color: #484773;
+    border-color: #484773;
+    padding: 0.8rem 2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+    .btn-primary:hover {
+        background-color: #513A66;
+        border-color: #513A66;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
