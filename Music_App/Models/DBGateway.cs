@@ -1,64 +1,90 @@
-﻿using System;
-using System.Collections.Generic;
-using ADODB;
+﻿using Microsoft.Data.SqlClient;
+
 
 namespace Music_App.Models
 {
     public class DBGateway
     {
-        public List<Artist> GetArtist()
+        private readonly string _connectionString;
+
+        public DBGateway(IConfiguration configuration)  
+        {
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+        }
+
+        public List<Artist> GetArtists()
         {
             List<Artist> artists = new List<Artist>();
-
-            string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Users\\fisch\\source\\repos\\CIS414MVCFirstLesson\\Northwind.MDB;User Id=admin;Password=;";
-
-            // Ado Objects
-            Connection aConnection = new Connection();
-            Command aCommand = new Command();
-            ADODB.Recordset aRecordset = null;
-
-            // This version uses the Execute method
-            try
+             
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                // Open the connection
-                aConnection.Open(connectionString, "", "", 0);
-
-                // Configure the command
-                aCommand.ActiveConnection = aConnection;
-                aCommand.CommandText = "select artistid, artistname, description from artists";
-
-                aCommand.CommandType = CommandTypeEnum.adCmdText;
-
-                object recordsAffected;
-                aRecordset = aCommand.Execute(out recordsAffected, Type.Missing, -1);
-
-                //Process Recordset and populate the list
-                while (!aRecordset.EOF)
+                try
                 {
-                    Artist anArtist = new Artist();
+                    connection.Open();
 
-                    anArtist.ArtistId = Convert.ToInt32(aRecordset.Fields["ArtistId"].Value);
-                    anArtist.ArtistName = aRecordset.Fields["ArtistName"].Value.ToString();
-                    anArtist.Description = aRecordset.Fields["Description"].Value.ToString();
-
-                    artists.Add(anArtist);
-                    aRecordset.MoveNext();
-
+                    using (SqlCommand command = new SqlCommand("SELECT artist_id, artist_name, description FROM artists", connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Artist anArtist = new Artist
+                                {
+                                    ArtistId = reader.GetInt32(0),
+                                    ArtistName = reader.GetString(1),
+                                    Description = reader.GetString(2)
+                                };
+                                artists.Add(anArtist);
+                            }
+                        }
+                    }
                 }
-
-            }
-            catch (Exception ex)
-            {
-                string error = ex.Message;
-            }
-            finally
-            {
-                //Clean up
-                if (aRecordset != null && aRecordset.State == (int)ADODB.ObjectStateEnum.adStateOpen) aRecordset.Close();
-                if (aConnection.State == (int)ADODB.ObjectStateEnum.adStateOpen) aConnection.Close();
+                catch (SqlException ex)
+                {
+                    
+                    throw; 
+                }
             }
 
             return artists;
+        }
+
+
+        public List<Album> GetAlbums()
+        {
+            List<Album> albums = new List<Album>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SELECT album_id, album_title, release_date FROM albums", connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Album anAlbum = new Album
+                                {
+                                    AlbumId = reader.GetInt32(0),
+                                    AlbumName = reader.GetString(1),
+                                    ReleaseDate = reader.GetDateTime(2),
+                                };
+                                albums.Add(anAlbum);
+                            }
+                        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+
+                    throw;
+                }
+            }
+
+            return albums;
         }
     }
 }

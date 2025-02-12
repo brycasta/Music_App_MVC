@@ -1,3 +1,5 @@
+using Music_App.Models;
+
 namespace Music_App
 {
     public class Program
@@ -8,6 +10,8 @@ namespace Music_App
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<DBGateway>();
 
             var app = builder.Build();
 

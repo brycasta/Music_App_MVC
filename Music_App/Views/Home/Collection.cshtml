@@ -1,0 +1,91 @@
+﻿@using Music_App.Models   
+
+
+<style>
+    body {
+        background: linear-gradient(135deg, #9b6bb3 0%, #6a4c93 100%);
+        min-height: 100vh;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="p-3 bg-primary text-white shadow-sm" style="background-color: #795AAC !important; border-radius: 6px;">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-people me-2 fs-4"></i>
+            <h2 class="mb-0" style="font-family: 'Poppins', sans-serif;">Artists</h2>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <table class="table table-hover bg-white shadow-sm rounded">
+        <thead>
+            <tr style="background-color: #795AAC;">
+                <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                    <i class="bi bi-person-circle me-2"></i>Artist Name
+                </th>
+                <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                    <i class="bi bi-card-text me-2"></i>Description
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var artist in ViewBag.Artists)
+            {
+                <tr class="align-middle">
+                    <td class="fw-semibold" style="border-color: #e0e0e0;">@artist.ArtistName</td>
+                    <td style="border-color: #e0e0e0;">@artist.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br />
+<br />
+
+
+<div class="container mt-4">
+    <div class="p-3 bg-primary text-white shadow-sm" style="background-color: #795AAC !important; border-radius: 6px;">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-collection me-2 fs-4"></i>
+            <h2 class="mb-0" style="font-family: 'Poppins', sans-serif;">Albums</h2>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <table class="table table-hover bg-white shadow-sm rounded">
+            <thead>
+                <tr style="background-color: #795AAC;">
+                    <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                        <i class="bi bi-disc me-2"></i>Album Name
+                    </th>
+                    <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                        <i class="bi bi-calendar me-2"></i>Release Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var album in ViewBag.Albums)
+                {
+                    <tr class="align-middle">
+                        <td class="fw-semibold" style="border-color: #e0e0e0;">@album.AlbumName</td>
+                        <td style="border-color: #e0e0e0;">@album.ReleaseDate.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <br />
+    <br />
+
+<div class="container mt-4">
+    <div class="p-3 bg-primary text-white shadow-sm" style="background-color: #795AAC !important; border-radius: 6px;">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-music-note-beamed me-2 fs-4"></i>
+            <h2 class="mb-0" style="font-family: 'Poppins', sans-serif;">Songs</h2>
+        </div>
+    </div>
+</div>
+
+</div>
