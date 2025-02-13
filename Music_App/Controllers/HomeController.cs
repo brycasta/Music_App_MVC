@@ -30,15 +30,22 @@ namespace Music_App.Controllers
             List<Artist> artists = _dbGateway.GetArtists();
             List<Album> albums = _dbGateway.GetAlbums();
             List<Song> songs = _dbGateway.GetSongs();
-            List<Playlist> playlists = _dbGateway.GetPlaylists();
+           
             List<Genre> genres = _dbGateway.GetGenres();
             ViewBag.Artists = artists;
             ViewBag.Albums = albums;
             ViewBag.Songs = songs;
-            ViewBag.Playlists = playlists;
             ViewBag.Genres = genres;
             return View();
         }
+
+        public IActionResult TuneIn()
+        {
+            List<Playlist> playlists = _dbGateway.GetPlaylists();
+            ViewBag.Playlists = playlists;
+            return View();
+        }
+
         //[Route("/InsertAnArtistForm")]
         public IActionResult InsertAnArtistForm()
         {
@@ -48,13 +55,50 @@ namespace Music_App.Controllers
         public IActionResult InsertAnArtist(string artistName, string description)
         {
             _dbGateway.InsertAnArtist(artistName, description);
-
-            List<Artist> artists = _dbGateway.GetArtists();
-
-            ViewBag.Artists = artists;
-
-            return View("Index");
+            return RedirectToAction("Collection"); 
         }
+
+        public IActionResult DeactivateArtist(int artistId) //Action to deactive row from table
+        {
+            _dbGateway.DeactivateArtist(artistId);
+            return RedirectToAction("Collection");
+        }
+
+        public IActionResult FilterCollection(string artistId) //Filter written by Bryan Castaneda to filter Artists
+        {
+            // Get all data
+            List<Artist> artists = _dbGateway.GetArtists();
+            List<Album> albums = _dbGateway.GetAlbums();
+            List<Song> songs = _dbGateway.GetSongs();
+            List<Genre> genres = _dbGateway.GetGenres();
+
+            // Only filter if an artist is selected (artistId is not empty or null)
+            if (!string.IsNullOrWhiteSpace(artistId) && int.TryParse(artistId, out int selectedArtistId))
+            {
+                ViewBag.SelectedArtistId = artistId;
+                // Filter artists
+                artists = artists.Where(a => a.ArtistId == selectedArtistId).ToList();
+                // Filter albums
+                albums = albums.Where(a => a.ArtistId == selectedArtistId).ToList();
+                // Filter songs through albums
+                var albumIds = albums.Select(a => a.AlbumId).ToList();
+                songs = songs.Where(s => albumIds.Contains(s.AlbumId)).ToList();
+            }
+            else
+            {
+                // When "All Artists" is selected, pass all data to ViewBag
+                ViewBag.SelectedArtistId = null;  // Clear the selected artist
+            }
+
+            // Pass data to ViewBag
+            ViewBag.Artists = artists;
+            ViewBag.Albums = albums;
+            ViewBag.Songs = songs;
+            ViewBag.Genres = genres;
+
+            return View("Collection");
+        }
+
         // For getting the rows by Id for updating tables.
         public IActionResult GetArtistById(int anArtistId)
         {
@@ -76,11 +120,7 @@ namespace Music_App.Controllers
         {
             _dbGateway.UpdateAnArtist(artistId, artistName, description);
 
-            List<Artist> artists = _dbGateway.GetArtists();
-
-            ViewBag.Artists = artists;
-
-            return View("Index");
+            return RedirectToAction("Collection");
         }
         public IActionResult InsertAnAlbumForm()
         {
@@ -92,29 +132,53 @@ namespace Music_App.Controllers
 
             return View();
         }
-        public IActionResult InsertAnAlbum(string albumName, DateTime releaseDate)
+
+        public IActionResult InsertAnAlbum(string albumName, DateTime releaseDate, int artistId, int genreId)
         {
-            _dbGateway.InsertAnAlbum(albumName, releaseDate);
-
-            List<Album> albums = _dbGateway.GetAlbums();
-
-            ViewBag.Albums = albums;
-
-            return View("Index");
+            _dbGateway.InsertAnAlbum(albumName, releaseDate, artistId, genreId);
+            return RedirectToAction("Collection");
         }
+
         public IActionResult InsertAPlaylistForm()
         {
             return View();
         }
+
+
+        public IActionResult FilterByGenre(string genreId) //Bryan Castaneda allows to filter albums and songs by genre
+        {
+            // Get all data
+            List<Artist> artists = _dbGateway.GetArtists();
+            List<Album> albums = _dbGateway.GetAlbums();
+            List<Song> songs = _dbGateway.GetSongs();
+            List<Genre> genres = _dbGateway.GetGenres();
+
+            // If a genre is selected, filter the albums and songs
+            if (!string.IsNullOrWhiteSpace(genreId) && int.TryParse(genreId, out int selectedGenreId))
+            {
+                ViewBag.SelectedGenreId = genreId;
+                // Filter albums by genre
+                albums = albums.Where(a => a.GenreId == selectedGenreId).ToList();
+                // Filter songs through the filtered albums
+                var albumIds = albums.Select(a => a.AlbumId).ToList();
+                songs = songs.Where(s => albumIds.Contains(s.AlbumId)).ToList();
+            }
+
+            // Pass everything to ViewBag
+            ViewBag.Artists = artists;
+            ViewBag.Albums = albums;
+            ViewBag.Songs = songs;
+            ViewBag.Genres = genres;
+
+            return View("Collection");
+        }
+
+
         public IActionResult InsertAPlaylist(string playlistName, string description, DateTime createdDate)
         {
             _dbGateway.InsertAPlaylist(playlistName, description, createdDate);
 
-            List<Playlist> playlists = _dbGateway.GetPlaylists();
-
-            ViewBag.Playlists = playlists;
-
-            return View("Index");
+            return RedirectToAction("TuneIn");
         }
         public IActionResult GetPlaylistById(int aPlaylistId)
         {
@@ -136,11 +200,7 @@ namespace Music_App.Controllers
         {
             _dbGateway.UpdateAPlaylist(playlistId, playlistName, description, createdDate);
 
-            List<Playlist> playlists = _dbGateway.GetPlaylists();
-
-            ViewBag.Playlists = playlists;
-
-            return View("Index");
+            return RedirectToAction("TuneIn");
         }
 
 

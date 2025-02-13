@@ -152,3 +152,35 @@ body {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
+
+/* Card styling */
+.card {
+    background-color: #1C1C1C; /* Dark gray for the card background */
+    border: 1px solid #2C2C2C; /* Subtle border to separate from background */
+    color: #ccc; /* Text inside the card */
+}
+
+.card-header {
+    background-color: #795AAC;
+    color: #fff;
+    border-bottom: none;
+}
+
+.card-title {
+    margin-bottom: 0;
+}
+
+.card-body p {
+    color: #ccc; /* Lighter gray text inside cards */
+}
+
+.card-footer {
+    background-color: transparent;
+    border-top: none;
+}
+
+
+/* Misc spacing/margins */
+.mt-3 {
+    margin-top: 1.5rem !important;
+}

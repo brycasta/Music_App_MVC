@@ -9,6 +9,8 @@ namespace Music_App.Models
         private int artistId = -1;
         private string artistName = "n/a";
         private string description = "n/a";
+        private bool isActive = true; // for extra table column
+
 
         // Gets and Sets
         public int ArtistId
@@ -43,6 +45,12 @@ namespace Music_App.Models
             {
                 this.description = value;
             }
+        }
+
+        public bool IsActive
+        {
+            get { return this.isActive; }
+            set { this.isActive = value; }
         }
 
         // Constructors

@@ -7,20 +7,69 @@
     Made By Lee Fischer
     2/12/25
 *@
-<h5>Playlist Id: @ViewBag.Playlists[0].PlaylistId</h5>
 
-<form action="UpdateAPlaylist" method="post">
-    <input type="hidden" name="playlistId" value="@ViewBag.Playlists[0].PlaylistId" />
 
-    Playlist Name<br />
-    <input type="text" name="playlistName" value="@ViewBag.Playlists[0].PlaylistName" /><br /><br />
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header" style="background-color: #795AAC;">
+            <h5 class="text-white mb-0" style="font-family: 'Poppins', sans-serif;">
+                <i class="bi bi-music-note-list me-2"></i>Update Playlist
+            </h5>
+        </div>
+        <div class="card-body p-4">
+            <form action="UpdateAPlaylist" method="post">
+                <input type="hidden" name="playlistId" value="@ViewBag.Playlists[0].PlaylistId" />
 
-    Description<br />
-    <input type="text" name="description" value="@ViewBag.Playlists[0].Description" /><br /><br />
+                <div class="mb-3">
+                    <label for="playlistName" class="form-label fw-semibold" style="font-family: 'Poppins', sans-serif;">
+                        <i class="bi bi-disc me-2"></i>Playlist Name
+                    </label>
+                    <input type="text"
+                           class="form-control"
+                           id="playlistName"
+                           name="playlistName"
+                           value="@ViewBag.Playlists[0].PlaylistName"
+                           placeholder="Enter playlist name"
+                           style="border-color: #e0e0e0;">
+                </div>
 
-    Created Date<br />
-    <input type="datetime-local" name="createdDate" value="@ViewBag.Playlists[0].CreatedDate" /><br /><br />
+                <div class="mb-3">
+                    <label for="description" class="form-label fw-semibold" style="font-family: 'Poppins', sans-serif;">
+                        <i class="bi bi-card-text me-2"></i>Description
+                    </label>
+                    <input type="text"
+                           class="form-control"
+                           id="description"
+                           name="description"
+                           value="@ViewBag.Playlists[0].Description"
+                           placeholder="Enter playlist description"
+                           style="border-color: #e0e0e0;">
+                </div>
 
-    <input type="submit" />
-    <input type="reset" />
-</form>
+                <div class="mb-4">
+                    <label for="createdDate" class="form-label fw-semibold" style="font-family: 'Poppins', sans-serif;">
+                        <i class="bi bi-calendar me-2"></i>Created Date
+                    </label>
+                    <input type="datetime-local"
+                           class="form-control"
+                           id="createdDate"
+                           name="createdDate"
+                           value="@ViewBag.Playlists[0].CreatedDate.ToString("yyyy-MM-ddTHH:mm")"
+                           style="border-color: #e0e0e0;">
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit"
+                            class="btn"
+                            style="background-color: #795AAC; color: white;">
+                        <i class="bi bi-check-circle me-2"></i>Update
+                    </button>
+                    <button type="reset"
+                            class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-2"></i>Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,7 @@ namespace Music_App.Models
         private int songId = -1;
         private string songTitle = "n/a";
         private TimeSpan duration = TimeSpan.MinValue;
+        private int albumId = -1; //added this variable for fk
 
         // Gets and Sets
         public int SongId
@@ -45,17 +46,25 @@ namespace Music_App.Models
             }
         }
 
+        public int AlbumId   // Add this
+        {
+            get { return this.albumId; }
+            set { this.albumId = value; }
+        }
         // Constructors
-        public Song(int aSongId, string aSongTitle, TimeSpan aDuration)
+        public Song(int aSongId, string aSongTitle, TimeSpan aDuration, int anAlbumId)
         {
             this.songId = aSongId;
             this.songTitle = aSongTitle;
             this.duration = aDuration;
+            this.albumId = anAlbumId;
         }
-        public Song() : this(-1, "n/a", TimeSpan.MinValue)
+
+        public Song() : this(-1, "n/a", TimeSpan.MinValue, -1)
         {
             // Empty Constructor
         }
+
 
         // Methods
         public override string ToString()

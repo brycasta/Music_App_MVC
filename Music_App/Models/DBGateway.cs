@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 
 namespace Music_App.Models
@@ -15,18 +16,23 @@ namespace Music_App.Models
         // GetArtists and GetAlbums by Bryan Castanenda
         // Other Methods By Lee Fischer
         // 2/12/25
+
+
         public List<Artist> GetArtists()
         {
             List<Artist> artists = new List<Artist>();
-             
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 try
                 {
                     connection.Open();
+                    string query = "SELECT Artist_Id, Artist_Name, Description, Is_Active FROM Artists WHERE Is_Active = @IsActive";
 
-                    using (SqlCommand command = new SqlCommand("SELECT artist_id, artist_name, description FROM artists", connection))
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
+                        // Add parameter for Is_Active
+                        command.Parameters.Add("@IsActive", SqlDbType.Bit).Value = true;
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
@@ -35,7 +41,8 @@ namespace Music_App.Models
                                 {
                                     ArtistId = reader.GetInt32(0),
                                     ArtistName = reader.GetString(1),
-                                    Description = reader.GetString(2)
+                                    Description = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                                    IsActive = reader.GetBoolean(3)
                                 };
                                 artists.Add(anArtist);
                             }
@@ -44,13 +51,16 @@ namespace Music_App.Models
                 }
                 catch (SqlException ex)
                 {
-                    
-                    throw; 
+                    // Log the exception
+                    // Consider using a logging framework
+                    Console.WriteLine($"Database error: {ex.Message}");
+                    throw;
                 }
             }
-
             return artists;
         }
+
+
         public List<Artist> GetArtistById(int anArtistId)
         {
             List<Artist> artists = new List<Artist>();
@@ -138,58 +148,80 @@ namespace Music_App.Models
                 }
             }
         }
-        public List<Album> GetAlbums()
-        {
-            List<Album> albums = new List<Album>();
 
+        public void DeactivateArtist(int artistId) // new method to set a row to deactive for delete functionality
+        {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 try
                 {
                     connection.Open();
+                    using (SqlCommand command = new SqlCommand(
+                        "UPDATE Artists SET Is_Active = 0 WHERE Artist_Id = @artistId", connection))
+                    {
+                        command.Parameters.AddWithValue("@artistId", artistId);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw;
+                }
+            }
+        }
 
-                    using (SqlCommand command = new SqlCommand("SELECT album_id, album_title, release_date FROM albums", connection))
+        public List<Album> GetAlbums() //Bryan Castaneda
+        {
+            List<Album> albums = new List<Album>();
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(
+                        "SELECT Album_Id, Album_Title, Release_Date, Artist_Id, Genre_Id FROM Albums",
+                        connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                Album anAlbum = new Album
-                                {
-                                    AlbumId = reader.GetInt32(0),
-                                    AlbumName = reader.GetString(1),
-                                    ReleaseDate = reader.GetDateTime(2),
-                                };
-                                albums.Add(anAlbum);
+                                albums.Add(new Album(
+                                    Convert.ToInt32(reader["Album_Id"]),
+                                    reader["Album_Title"].ToString(),
+                                    Convert.ToDateTime(reader["Release_Date"]),
+                                    Convert.ToInt32(reader["Artist_Id"]),
+                                    Convert.ToInt32(reader["Genre_Id"])
+                                ));
                             }
                         }
                     }
                 }
                 catch (SqlException ex)
                 {
-
                     throw;
                 }
             }
-
             return albums;
         }
-        public List<Album> InsertAnAlbum(string anAlbumTitle, DateTime aReleaseDate)
+
+        public List<Album> InsertAnAlbum(string anAlbumTitle, DateTime aReleaseDate, int artistId, int genreId)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 try
                 {
                     connection.Open();
-
-                    using (SqlCommand command = new SqlCommand("INSERT into albums(album_title, release_date)VALUES(@album_title, @release_date)", connection))
+                    using (SqlCommand command = new SqlCommand(
+                        "INSERT INTO albums(album_title, release_date, artist_id, genre_id) " +
+                        "VALUES(@album_title, @release_date, @artist_id, @genre_id)", connection))
                     {
                         command.Parameters.Add("@album_title", System.Data.SqlDbType.VarChar, 55).Value = anAlbumTitle;
                         command.Parameters.Add("@release_date", System.Data.SqlDbType.DateTime).Value = aReleaseDate;
-
+                        command.Parameters.Add("@artist_id", System.Data.SqlDbType.Int).Value = artistId;
+                        command.Parameters.Add("@genre_id", System.Data.SqlDbType.Int).Value = genreId;
                         command.ExecuteNonQuery();
                     }
-
                     return GetAlbums();
                 }
                 catch (SqlException ex)
@@ -198,17 +230,15 @@ namespace Music_App.Models
                 }
             }
         }
-        public List<Song> GetSongs()
+        public List<Song> GetSongs() //updated query to include albumid
         {
             List<Song> songs = new List<Song>();
-
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 try
                 {
                     connection.Open();
-
-                    using (SqlCommand command = new SqlCommand("SELECT song_id, song_title, duration FROM songs", connection))
+                    using (SqlCommand command = new SqlCommand("SELECT song_id, song_title, duration, album_id FROM songs", connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
@@ -219,6 +249,7 @@ namespace Music_App.Models
                                     SongId = reader.GetInt32(0),
                                     SongTitle = reader.GetString(1),
                                     Duration = reader.GetTimeSpan(2),
+                                    AlbumId = reader.GetInt32(3)
                                 };
                                 songs.Add(aSong);
                             }
@@ -227,11 +258,9 @@ namespace Music_App.Models
                 }
                 catch (SqlException ex)
                 {
-
                     throw;
                 }
             }
-
             return songs;
         }
         public List<Playlist> GetPlaylists()

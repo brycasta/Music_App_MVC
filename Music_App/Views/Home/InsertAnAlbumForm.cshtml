@@ -7,13 +7,76 @@
     Made by Lee Fischer
     2/12/25
 *@
-<form action="InsertAnAlbum" method="post">
-    Artist Name <br />
-    <input type="text" name="albumName" /><br /><br />
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header" style="background-color: #795AAC;">
+            <h5 class="text-white mb-0" style="font-family: 'Poppins', sans-serif;">
+                <i class="bi bi-disc me-2"></i>Add New Album
+            </h5>
+        </div>
+        <div class="card-body p-4">
+            <form action="InsertAnAlbum" method="post">
+                <div class="mb-3">
+                    <label for="albumName" class="form-label fw-semibold" style="font-family: 'Poppins', sans-serif;">
+                        <i class="bi bi-disc me-2"></i>Album Name
+                    </label>
+                    <input type="text"
+                           class="form-control"
+                           id="albumName"
+                           name="albumName"
+                           placeholder="Enter album name"
+                           style="border-color: #e0e0e0;">
+                </div>
 
-    Release Date <br />
-    <input type="date" name="releaseDate" /><br /><br />
+                <div class="mb-3">
+                    <label for="artistId" class="form-label fw-semibold" style="font-family: 'Poppins', sans-serif;">
+                        <i class="bi bi-person-circle me-2"></i>Artist
+                    </label>
+                    <select class="form-select" id="artistId" name="artistId" style="border-color: #e0e0e0;">
+                        <option value="">Select an Artist</option>
+                        @foreach (var artist in ViewBag.Artists)
+                        {
+                            <option value="@artist.ArtistId">@artist.ArtistName</option>
+                        }
+                    </select>
+                </div>
 
-    <input type="submit" />
-    <input type="reset" />
-</form>
+                <div class="mb-3">
+                    <label for="genreId" class="form-label fw-semibold" style="font-family: 'Poppins', sans-serif;">
+                        <i class="bi bi-music-note me-2"></i>Genre
+                    </label>
+                    <select class="form-select" id="genreId" name="genreId" style="border-color: #e0e0e0;">
+                        <option value="">Select a Genre</option>
+                        @foreach (var genre in ViewBag.Genres)
+                        {
+                            <option value="@genre.GenreId">@genre.GenreName</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="releaseDate" class="form-label fw-semibold" style="font-family: 'Poppins', sans-serif;">
+                        <i class="bi bi-calendar me-2"></i>Release Date
+                    </label>
+                    <input type="date"
+                           class="form-control"
+                           id="releaseDate"
+                           name="releaseDate"
+                           style="border-color: #e0e0e0;">
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit"
+                            class="btn"
+                            style="background-color: #795AAC; color: white;">
+                        <i class="bi bi-check-circle me-2"></i>Submit
+                    </button>
+                    <button type="reset"
+                            class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-2"></i>Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

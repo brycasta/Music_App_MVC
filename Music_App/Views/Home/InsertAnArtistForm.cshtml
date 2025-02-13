@@ -6,14 +6,54 @@
 @*
     Made by Lee Fischer
     2/12/25
+
+    Front end by Bryan Castaneda
 *@
-<form action="InsertAnArtist" method="post">
-    Artist Name <br />
-    <input type="text" name="artistName" /><br /><br />
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header" style="background-color: #795AAC;">
+            <h5 class="text-white mb-0" style="font-family: 'Poppins', sans-serif;">
+                <i class="bi bi-music-note-beamed me-2"></i>Add New Artist
+            </h5>
+        </div>
+        <div class="card-body p-4">
+            <form action="InsertAnArtist" method="post">
+                <div class="mb-3">
+                    <label for="artistName" class="form-label fw-semibold" style="font-family: 'Poppins', sans-serif;">
+                        <i class="bi bi-person-circle me-2"></i>Artist Name
+                    </label>
+                    <input type="text"
+                           class="form-control"
+                           id="artistName"
+                           name="artistName"
+                           placeholder="Enter artist name"
+                           style="border-color: #e0e0e0;">
+                </div>
 
-    Description <br />
-    <input type="text" name="description" /><br /><br />
+                <div class="mb-4">
+                    <label for="description" class="form-label fw-semibold" style="font-family: 'Poppins', sans-serif;">
+                        <i class="bi bi-card-text me-2"></i>Description
+                    </label>
+                    <input type="text"
+                           class="form-control"
+                           id="description"
+                           name="description"
+                           placeholder="Enter description"
+                           style="border-color: #e0e0e0;">
+                </div>
 
-    <input type="submit" />
-    <input type="reset" />
-</form>
+                <div class="d-flex gap-2">
+                    <button type="submit"
+                            class="btn"
+                            style="background-color: #795AAC; color: white;">
+                        <i class="bi bi-check-circle me-2"></i>Submit
+                    </button>
+                    <button type="reset"
+                            class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-2"></i>Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
