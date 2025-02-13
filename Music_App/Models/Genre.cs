@@ -8,7 +8,7 @@ namespace Music_App.Models
         // Private Variables
         private int genreId = -1;
         private string genreName = "n/a";
-        private double mood = 99999.99;
+        private decimal mood = Decimal.MinValue;
 
         // Gets and Sets
         public int GenreId
@@ -33,7 +33,7 @@ namespace Music_App.Models
                 this.genreName = value;
             }
         }
-        public double Mood
+        public decimal Mood
         {
             get
             {
@@ -46,13 +46,13 @@ namespace Music_App.Models
         }
 
         // Constructors
-        public Genre(int aGenreId, string aGenreName, double aMood)
+        public Genre(int aGenreId, string aGenreName, decimal aMood)
         {
             this.genreId = aGenreId;
             this.genreName = aGenreName;
             this.mood = aMood;
         }
-        public Genre() : this(-1, "n/a", 99999.99)
+        public Genre() : this(-1, "n/a", Decimal.MinValue)
         {
             // Empty Constructor
         }

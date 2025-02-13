@@ -1,5 +1,5 @@
 ﻿@using Music_App.Models   
-
+@*Format and View made by Bryan Castanenda. Update/Insert Forms made by Lee Fischer*@
 
 <style>
     body {
@@ -15,30 +15,33 @@
             <h2 class="mb-0" style="font-family: 'Poppins', sans-serif;">Artists</h2>
         </div>
     </div>
-</div>
 
-<div class="mt-4">
-    <table class="table table-hover bg-white shadow-sm rounded">
-        <thead>
-            <tr style="background-color: #795AAC;">
-                <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
-                    <i class="bi bi-person-circle me-2"></i>Artist Name
-                </th>
-                <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
-                    <i class="bi bi-card-text me-2"></i>Description
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var artist in ViewBag.Artists)
-            {
-                <tr class="align-middle">
-                    <td class="fw-semibold" style="border-color: #e0e0e0;">@artist.ArtistName</td>
-                    <td style="border-color: #e0e0e0;">@artist.Description</td>
+
+    <div class="mt-4">
+        <table class="table table-hover bg-white shadow-sm rounded">
+            <thead>
+                <tr style="background-color: #795AAC;">
+                    <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                        <i class="bi bi-person-circle me-2"></i>Artist Name
+                    </th>
+                    <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                        <i class="bi bi-card-text me-2"></i>Description
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var artist in ViewBag.Artists)
+                {
+                    <tr class="align-middle">
+                        <td class="fw-semibold" style="border-color: #e0e0e0;">@artist.ArtistName</td>
+                        <td style="border-color: #e0e0e0;">@artist.Description</td>
+                        <td style="border-color: #e0e0e0;"><a href="UpdateAnArtistForm?anArtistId=@artist.ArtistId">Update</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a href="InsertAnArtistForm">Insert an Artist</a><br /><br />
+    </div>
 </div>
 <br />
 <br />
@@ -51,6 +54,7 @@
             <h2 class="mb-0" style="font-family: 'Poppins', sans-serif;">Albums</h2>
         </div>
     </div>
+
 
     <div class="mt-4">
         <table class="table table-hover bg-white shadow-sm rounded">
@@ -74,10 +78,11 @@
                 }
             </tbody>
         </table>
+        <a href="InsertAnAlbumForm">Insert an Album</a>
     </div>
-
-    <br />
-    <br />
+</div>
+<br />
+<br />
 
 <div class="container mt-4">
     <div class="p-3 bg-primary text-white shadow-sm" style="background-color: #795AAC !important; border-radius: 6px;">
@@ -86,6 +91,106 @@
             <h2 class="mb-0" style="font-family: 'Poppins', sans-serif;">Songs</h2>
         </div>
     </div>
-</div>
 
+
+    <div class="mt-4">
+        <table class="table table-hover bg-white shadow-sm rounded">
+            <thead>
+                <tr style="background-color: #795AAC;">
+                    <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                        <i class="bi bi-disc me-2"></i>Song Name
+                    </th>
+                    <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                        <i class="bi bi-calendar me-2"></i>Duration
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var song in ViewBag.Songs)
+                {
+                    <tr class="align-middle">
+                        <td class="fw-semibold" style="border-color: #e0e0e0;">@song.SongTitle</td>
+                        <td style="border-color: #e0e0e0;">@song.Duration.ToString("m\\:ss")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+<br />
+
+<div class="container mt-4">
+    <div class="p-3 bg-primary text-white shadow-sm" style="background-color: #795AAC !important; border-radius: 6px;">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-music-note-beamed me-2 fs-4"></i>
+            <h2 class="mb-0" style="font-family: 'Poppins', sans-serif;">Genres</h2>
+        </div>
+    </div>
+
+
+    <div class="mt-4">
+        <table class="table table-hover bg-white shadow-sm rounded">
+            <thead>
+                <tr style="background-color: #795AAC;">
+                    <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                        <i class="bi bi-disc me-2"></i>Genre Name
+                    </th>
+                    <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                        <i class="bi bi-calendar me-2"></i>Mood
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var genre in ViewBag.Genres)
+                {
+                    <tr class="align-middle">
+                        <td class="fw-semibold" style="border-color: #e0e0e0;">@genre.GenreName</td>
+                        <td style="border-color: #e0e0e0;">@genre.Mood</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+<br />
+
+<div class="container mt-4">
+    <div class="p-3 bg-primary text-white shadow-sm" style="background-color: #795AAC !important; border-radius: 6px;">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-music-note-beamed me-2 fs-4"></i>
+            <h2 class="mb-0" style="font-family: 'Poppins', sans-serif;">Playlists</h2>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <table class="table table-hover bg-white shadow-sm rounded">
+            <thead>
+                <tr style="background-color: #795AAC;">
+                    <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                        <i class="bi bi-disc me-2"></i>Playlist Name
+                    </th>
+                    <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                        <i class="bi bi-calendar me-2"></i>Description
+                    </th>
+                    <th class="text-white" style="font-family: 'Poppins', sans-serif; border: none;">
+                        <i class="bi bi-calendar me-2"></i>Created Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var playlist in ViewBag.Playlists)
+                {
+                    <tr class="align-middle">
+                        <td class="fw-semibold" style="border-color: #e0e0e0;">@playlist.PlaylistName</td>
+                        <td style="border-color: #e0e0e0;">@playlist.Description</td>
+                        <td style="border-color: #e0e0e0;">@playlist.CreatedDate.ToShortDateString()</td>
+                        <td style="border-color: #e0e0e0;"><a href="UpdateAPlaylistForm?aPlaylistId=@playlist.PlaylistId">Update</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a href="InsertAPlaylistForm">Insert a playlist</a>
+    </div>
 </div>
